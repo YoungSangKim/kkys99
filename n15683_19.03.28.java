@@ -1,9 +1,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
 
-public class n15683 {
+public class Main {
 	static int[][] map, temp;
 	static ArrayList<cctv> tv = new ArrayList<cctv>();
 	static int[] choice;
@@ -26,31 +27,37 @@ public class n15683 {
 				}
 			}
 		}
-
+        
 		choice = new int[cc];
 		if (tv.size() > 0) {
 			choiceDir(0);
 			System.out.println(tp);
 		} else {
-            sum = 0;
-			for(int i = 0; i<n; i++){
-                for(int j = 0; j<m; j++){
-                    if(map[i][j] == 0){
-                        sum++;
-                    }
+            print();
+	    }
+    }
+    public static void print(){
+        sum = 0;
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<m; j++){
+                if(map[i][j] == 0){
+                    sum++;
                 }
             }
-            System.out.println(sum);
-		}
-	}
-
+        }
+        System.out.println(sum);
+    }
+        
+    
 	public static void choiceDir(int depth) {
 		if (depth == cc) {
+
 			for (int i = 0; i < cc; i++) {
 				tv.get(i).dir = choice[i];
-				copy();
-				watch();
 			}
+            copy();
+			watch();
+            
 			return;
 		}
 		for (int i = 0; i < 4; i++) {
@@ -141,7 +148,6 @@ public class n15683 {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				temp[i][j] = map[i][j];
-
 			}
 		}
 	}
@@ -149,64 +155,42 @@ public class n15683 {
 	public static void east(int x, int y) {
 
 		for (int i = y; i < m; i++) {
-			if (!range(x, i) || temp[x][i] == 9)
-				continue;
-			if (temp[x][i] == 6) {
-				break;
-			}
-			if (temp[x][i] == 0) {
-				temp[x][i] = 9;
-			}
+			if (!range(x, i) || temp[x][i] == 9) continue;
+			if (temp[x][i] == 6) break;
+			if (temp[x][i] == 0) temp[x][i] = 9;
 		}
 	}
 
 	public static void west(int x, int y) {
 		for (int i = y; i >= 0; i--) {
-			if (!range(x, i) || temp[x][i] == 9)
-				continue;
-			if (temp[x][i] == 6) {
-				break;
-			}
-			if (temp[x][i] == 0) {
-				temp[x][i] = 9;
-			}
+			if (!range(x, i) || temp[x][i] == 9) continue;
+			if (temp[x][i] == 6) break;
+			if (temp[x][i] == 0) temp[x][i] = 9;
 		}
 	}
 
 	public static void north(int x, int y) {
 		for (int i = x; i >= 0; i--) {
-			if (!range(i, y) || temp[i][y] == 9)
-				continue;
-			if (temp[i][y] == 6)
-				break;
-			if (temp[i][y] == 0)
-				temp[i][y] = 9;
-
+			if (!range(i, y) || temp[i][y] == 9) continue;
+			if (temp[i][y] == 6) break;
+			if (temp[i][y] == 0) temp[i][y] = 9;
 		}
 	}
 
 	public static void south(int x, int y) {
 		for (int i = x; i < n; i++) {
-			if (!range(i, y) || temp[i][y] == 9)
-				continue;
-			if (temp[i][y] == 6) {
-				break;
-			}
-			if (temp[i][y] == 0) {
-				temp[i][y] = 9;
-			}
+			if (!range(i, y) || temp[i][y] == 9) continue;
+			if (temp[i][y] == 6) break;
+			if (temp[i][y] == 0) temp[i][y] = 9;
 		}
 	}
 
 	public static boolean range(int x, int y) {
-		if (x >= 0 && x < n && y >= 0 && y < m) {
-			return true;
-		} else {
-			return false;
-		}
+		if (x >= 0 && x < n && y >= 0 && y < m) return true;
+		else return false;
 	}
 
-	public static class cctv implements Comparable<cctv> {
+	public static class cctv {
 		int x;
 		int y;
 		int type;
@@ -217,11 +201,6 @@ public class n15683 {
 			this.y = y;
 			this.type = type;
 			this.dir = dir;
-		}
-
-		@Override
-		public int compareTo(cctv o) {
-			return o.type - this.type;
 		}
 	}
 }
