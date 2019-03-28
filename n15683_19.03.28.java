@@ -51,13 +51,11 @@ public class Main {
     
 	public static void choiceDir(int depth) {
 		if (depth == cc) {
-
 			for (int i = 0; i < cc; i++) {
 				tv.get(i).dir = choice[i];
 			}
-            copy();
+            		copy();
 			watch();
-            
 			return;
 		}
 		for (int i = 0; i < 4; i++) {
@@ -66,7 +64,7 @@ public class Main {
 		}
 	}
 
-//dir --> 0 - N, 1 - E, 2 - S, 3- W 
+	//dir --> 0 - N, 1 - E, 2 - S, 3- W 
 	public static void watch() {
 		for (cctv c : tv) {
 			if (c.type == 5) {
