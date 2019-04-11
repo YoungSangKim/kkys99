@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class n17135 {
-	static int n, m, d, sum = Integer.MIN_VALUE,res;
+	static int n, m, d, sum = Integer.MIN_VALUE;
 	static ArrayList<enemy> enemys, copy;
-	static ArrayList<enemy> deadenemy, real;
+	static ArrayList<enemy> deadenemy;
 	static ArrayList<enemy> choiceenemy;
 	static ArrayList<castle> ach;
 	static int[] arch;
@@ -27,15 +27,12 @@ public class n17135 {
 				}
 			}
 		}
-		res = enemys.size();
 		init();
-		// print();
 	}
 
 	public static void init() {
 		arch = new int[m];
-		for (int i = 0; i < m; i++)
-			arch[i] = i;
+		for (int i = 0; i < m; i++) arch[i] = i;
 		choice(0, m, 3, 0);
 		System.out.println(sum);
 	}
@@ -45,17 +42,13 @@ public class n17135 {
 		for (enemy e : enemys) {
 			copy.add(new enemy(e.x, e.y, 0));
 		}
-
 	}
 
 	public static void choice(int index, int depth, int r, int target) {
 		if (r == 0) {
 			ach = new ArrayList<castle>();
-			for (int i = 0; i < index; i++)
-				ach.add(new castle(n + 1, arch[i] + 1));
-			// kill();
+			for (int i = 0; i < index; i++) ach.add(new castle(n + 1, arch[i] + 1));
 			sum = Math.max(sum, kill());
-			// print2();
 		} else if (target == m)
 			return;
 		else {
@@ -71,44 +64,25 @@ public class n17135 {
 	}
 
 	public static int kill() {
-		
 		copy();
 		Collections.sort(copy);
 		int kill = 0;
 		int cnt = 0;
 		for (int t = 0; t < n; t++) {
-		//	System.out.println((t + 1) + "번째 이동 !>>>>>>>>>>>>>>>>>>>>>");
 			if (!copy.isEmpty()) {
 				deadenemy = new ArrayList<enemy>();
-				for (castle a : ach) {
-					enemykill(a.x, a.y);
-				}
-				
-				for (enemy e : deadenemy) {
-			//		System.out.println(e.x + " " + e.y + " " + e.dirr);
-				}
-			//	System.out.println(deadenemy.size());
-			//	System.out.println("=======죽일적들========"+deadenemy.size());
-
-				for (enemy e : copy) {
-			//		System.out.println(e.x + " " + e.y + " " + e.dirr);
-				}
-			//	System.out.println("=======뒤질적들======="+copy.size());
-				for(int i = 0; i<deadenemy.size(); i++) {
+				for (castle a : ach) enemykill(a.x, a.y);
+				for (int i = 0; i < deadenemy.size(); i++) {
 					int x = deadenemy.get(i).x;
 					int y = deadenemy.get(i).y;
-					for(int j = 0; j<copy.size(); j++) {
-						if(x == copy.get(j).x && y == copy.get(j).y) {
+					for (int j = 0; j < copy.size(); j++) {
+						if (x == copy.get(j).x && y == copy.get(j).y) {
 							cnt++;
 							copy.remove(j);
 							j--;
 						}
 					}
 				}
-				for (enemy e : copy) {
-				//	System.out.println(e.x + " " + e.y + " " + e.dirr);
-				}
-			//	System.out.println("======뒤지고남은적들======"+copy.size());
 				for (int i = 0; i < copy.size(); i++) {
 					copy.set(i, new enemy(copy.get(i).x + 1, copy.get(i).y, copy.get(i).dirr));
 					if (copy.get(i).x > n) {
@@ -116,12 +90,7 @@ public class n17135 {
 						i--;
 					}
 				}
-				for (enemy e : copy) {
-				//	System.out.println(e.x + " " + e.y + " " + e.dirr);
-				}
-				//System.out.println("=======움직이고난다음========");
 			}
-
 		}
 		kill = cnt;
 		return kill;
@@ -132,38 +101,14 @@ public class n17135 {
 		choiceenemy = new ArrayList<enemy>();
 		for (int i = 0; i < copy.size(); i++) {
 			dist = dir(copy.get(i).x, copy.get(i).y, x, y);
-			//System.out.println(i + " d 값 : " + d + " " + "적과의 거리 " + dist + "/// 적위치 : "+ copy.get(i).x + " "+ copy.get(i).y + " 궁수 위치 : " + x + " " + y);
 			copy.set(i, new enemy(copy.get(i).x, copy.get(i).y, dist));
-			if (dist <= d) {
-				choiceenemy.add(new enemy(copy.get(i).x, copy.get(i).y, copy.get(i).dirr));
-			}
+			if (dist <= d) choiceenemy.add(new enemy(copy.get(i).x, copy.get(i).y, copy.get(i).dirr));
 		}
-
 		Collections.sort(choiceenemy);
-		for (enemy e : choiceenemy) {
-			//System.out.println(e.x + "  " + e.y + " " + e.dirr);
-		}
-		//System.out.println("======선택받은 적들======");
 		if (!choiceenemy.isEmpty()) {
 			enemy e = choiceenemy.get(0);
 			deadenemy.add(new enemy(e.x, e.y, e.dirr));
 		}
-
-		// System.out.println("뒤진 적들 : " + deadenemy.size());
-	}
-
-	public static void print2() {
-		for (castle c : ach) {
-			System.out.println(c.x + " " + c.y);
-		}
-		System.out.println("========================");
-	}
-
-	public static void print() {
-		for (enemy e : choiceenemy) {
-			System.out.println(e.x + " " + e.y + " " + e.dirr);
-		}
-		System.out.println("=====뒤진 병사들=======");
 	}
 
 	public static class castle {
@@ -190,7 +135,7 @@ public class n17135 {
 		@Override
 		public int compareTo(enemy o) {
 			if (this.dirr == o.dirr) {
-				return this.y-o.y;
+				return this.y - o.y;
 			} else {
 				return this.dirr - o.dirr;
 			}
