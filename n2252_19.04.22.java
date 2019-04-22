@@ -5,6 +5,8 @@ public class n2252 {
 	static int n, m;
 	static LinkedList<Integer> map[];
 	static int[] indegree;
+	static boolean[] visit;
+	static Stack<Integer> s = new Stack<Integer>();
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,6 +15,7 @@ public class n2252 {
 		m = Integer.parseInt(st.nextToken());
 		indegree = new int[n];
 		map = new LinkedList[n];
+		visit = new boolean[n];
 		for (int i = 0; i < n; i++)
 			map[i] = new LinkedList<Integer>();
 		for (int i = 0; i < m; i++) {
@@ -23,6 +26,24 @@ public class n2252 {
 			indegree[v2]++;
 		}
 		topologicalSort();
+		for (int i = 0; i < n; i++) {
+			if (!visit[i])
+				topologicaldfs(i);
+		}
+		System.out.println();
+		while (!s.isEmpty()) {
+			System.out.print(s.pop() + 1 + " ");
+		}
+	}
+
+	public static void topologicaldfs(int v) {
+		visit[v] = true;
+		for (int node : map[v]) {
+			if (visit[node])
+				continue;
+			topologicaldfs(node);
+		}
+		s.push(v);
 	}
 
 	public static void topologicalSort() {
