@@ -1,0 +1,15 @@
+import java.util.*;
+import java.io.*;
+
+public class n10817 {
+	public static void main(String [] args) throws Exception{
+		int [] arr = new int [3];
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		arr[0] = Integer.parseInt(st.nextToken());
+		arr[1] = Integer.parseInt(st.nextToken());
+		arr[2] = Integer.parseInt(st.nextToken());
+		Arrays.sort(arr);
+		System.out.println(arr[1]);
+	}
+}
